@@ -34,10 +34,10 @@ fun UserDetails(onNavigateToMessagesList: () -> Unit) {
             .fillMaxWidth()
             .padding(20.dp)
     ) {
-        ImageDisplayer()
         NavigationBar(onNavigateToMessagesList)
         Spacer(modifier = Modifier.height(80.dp))
         UserInfo()
+        PhotoPicker()
     }
 }
 
