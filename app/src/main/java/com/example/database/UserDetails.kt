@@ -34,6 +34,7 @@ fun UserDetails(onNavigateToMessagesList: () -> Unit) {
             .fillMaxWidth()
             .padding(20.dp)
     ) {
+        ImageDisplayer()
         NavigationBar(onNavigateToMessagesList)
         Spacer(modifier = Modifier.height(80.dp))
         UserInfo()
@@ -58,14 +59,6 @@ fun UserInfo() {
         )
 
         Spacer(modifier = Modifier.width(20.dp))
-
-//        Text(
-//            text = "Nguyen",
-//            color = MaterialTheme.colorScheme.primary,
-//            fontSize = 40.sp,
-//            fontWeight = FontWeight.Bold,
-//            modifier = Modifier.padding(5.dp)
-//        )
 
         TextField(
             value = "Thu", onValueChange = {},

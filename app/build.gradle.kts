@@ -68,6 +68,11 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // Coil
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // ROOM
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
@@ -76,6 +81,7 @@ dependencies {
     // To use Kotlin Symbol Processing (KSP)
     ksp("androidx.room:room-compiler:$room_version")
 
+    // Navigation
     val nav_version = "2.7.6"
 
     // Java language implementation
