@@ -55,12 +55,14 @@ fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel) 
 fun UserInfo(viewModel: MainViewModel) {
     var userName by remember { mutableStateOf("") }
 
-    val currentUserId = 1 // Adjust the ID accordingly
+    val currentUserId = 1
 
     LaunchedEffect(currentUserId) {
         // Fetch the current user initially
         val currentUser = viewModel.getCurrentUserById(currentUserId)
-        userName = currentUser.userName ?: ""
+        if (currentUser != null) {
+            userName = currentUser.userName ?: ""
+        }
     }
 
     Column(

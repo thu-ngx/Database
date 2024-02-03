@@ -4,7 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val db: AppDatabase = Room.databaseBuilder(
@@ -14,27 +17,30 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDao: UserDao = db.userDao()
 
-    private val initialUser = User(1, "Nguyen")
-
-    val currentUser = initialUser
+    // Use Dispatchers.IO to perform database operations in the background
     fun insertUser(user: User) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             userDao.insertUser(user)
         }
     }
 
-    fun getCurrentUserById(userId: Int): User {
-        return userDao.findById(userId)
+    // Use a suspending function with withContext(Dispatchers.IO)
+    suspend fun getCurrentUserById(userId: Int): User {
+        return withContext(Dispatchers.IO) {
+            userDao.findById(userId)
+        }
     }
 
+    // Use Dispatchers.IO to perform database operations in the background
     fun updateUserName(newName: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val currentUser = userDao.findById(1)
-            if (currentUser != null) {
+            currentUser?.let {
                 // Update the user's name
-                currentUser.userName = newName
-                userDao.updateUser(currentUser)
+                it.userName = newName
+                userDao.updateUser(it)
             }
         }
     }
 }
+

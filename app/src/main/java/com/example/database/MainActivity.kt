@@ -9,9 +9,16 @@ import com.example.database.data.MainViewModel
 import com.example.database.data.User
 
 class MainActivity : ComponentActivity() {
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel: MainViewModel = MainViewModel(application)
+
+        viewModel = MainViewModel(application)
+
+        // Insert the initial user when the app first runs
+        viewModel.insertUser(User(id = 1, userName = "Nguyen"))
+
         setContent {
             MyAppNavHost(viewModel = viewModel)
         }
