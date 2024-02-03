@@ -24,6 +24,17 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun insertUserIfNotExists(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            // Check if the user with ID 1 already exists
+            val existingUser = userDao.findById(user.id)
+            if (existingUser == null) {
+                // User doesn't exist, insert the user
+                userDao.insertUser(user)
+            }
+        }
+    }
+
     // Use a suspending function with withContext(Dispatchers.IO)
     suspend fun getCurrentUserById(userId: Int): User {
         return withContext(Dispatchers.IO) {

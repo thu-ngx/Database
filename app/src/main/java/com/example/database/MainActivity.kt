@@ -16,8 +16,8 @@ class MainActivity : ComponentActivity() {
 
         viewModel = MainViewModel(application)
 
-        // Insert the initial user when the app first runs
-        viewModel.insertUser(User(id = 1, userName = "Nguyen"))
+        // Insert the initial user if it doesn't exist
+        viewModel.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
 
         setContent {
             MyAppNavHost(viewModel = viewModel)

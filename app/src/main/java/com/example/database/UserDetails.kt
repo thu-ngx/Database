@@ -85,8 +85,6 @@ fun UserInfo(viewModel: MainViewModel) {
             value = userName,
             onValueChange = {
                 userName = it
-                // Update the user's name in the database
-                viewModel.updateUserName(it)
             },
             modifier = Modifier.padding(vertical = 30.dp)
         )
