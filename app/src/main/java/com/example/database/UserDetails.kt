@@ -1,5 +1,6 @@
 package com.example.database
 
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -34,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import com.example.database.data.MainViewModel
 
@@ -58,23 +60,32 @@ fun UserInfo(viewModel: MainViewModel) {
 
     val currentUserId = 1
 
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val context = LocalContext.current
+
     LaunchedEffect(currentUserId) {
         // Fetch the current user initially
         val currentUser = viewModel.getUserById(currentUserId)
         if (currentUser != null) {
-
             userName = currentUser.userName ?: ""
         }
-    }
 
-    var selectedImageUri by remember {
-        mutableStateOf<Uri?>(null)
+        // Load the saved image Uri from app-specific storage
+        selectedImageUri = loadSavedImageUri(context)
     }
 
     // Registers a photo picker activity launcher in single-select mode.
     val singlePhotoPickLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> selectedImageUri = uri }
+        onResult = { uri: Uri? ->
+            uri?.let {
+                selectedImageUri = it
+                saveImageToInternalStorage(context, it)
+            }
+        }
     )
 
     // Launch the photo picker and let the user choose only images.
@@ -99,7 +110,7 @@ fun UserInfo(viewModel: MainViewModel) {
                 .clickable(onClick = {
                     pickPhoto()
                 }),
-                    contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.FillBounds
         )
 
         Spacer(modifier = Modifier.width(20.dp))
@@ -122,8 +133,6 @@ fun UserInfo(viewModel: MainViewModel) {
             Text("Save")
         }
     }
-
-
 }
 
 
@@ -147,6 +156,30 @@ fun BackButton(onNavigateToMessagesList: () -> Unit) {
         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
     }
 }
+
+fun saveImageToInternalStorage(context: Context, uri: Uri): Uri? {
+    try {
+        val inputStream = context.contentResolver.openInputStream(uri)
+        val outputStream = context.openFileOutput("image.jpg", Context.MODE_PRIVATE)
+
+        inputStream?.use { input ->
+            outputStream.use { output ->
+                input.copyTo(output)
+            }
+        }
+
+        // Return the Uri of the saved image file
+        return Uri.fromFile(context.getFileStreamPath("image.jpg"))
+    } catch (e: Exception) {
+        // Handle exceptions, e.g., IOException
+        return null
+    }
+}
+
+fun loadSavedImageUri(context: Context): Uri? {
+    return Uri.fromFile(context.getFileStreamPath("image.jpg"))
+}
+
 
 //@Preview
 //@Composable
