@@ -59,7 +59,7 @@ fun UserInfo(viewModel: MainViewModel) {
 
     LaunchedEffect(currentUserId) {
         // Fetch the current user initially
-        val currentUser = viewModel.getCurrentUserById(currentUserId)
+        val currentUser = viewModel.getUserById(currentUserId)
         if (currentUser != null) {
             userName = currentUser.userName ?: ""
         }

@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -17,7 +16,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val userDao: UserDao = db.userDao()
 
-    // Use Dispatchers.IO to perform database operations in the background
     fun insertUser(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
             userDao.insertUser(user)
@@ -35,14 +33,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // Use a suspending function with withContext(Dispatchers.IO)
-    suspend fun getCurrentUserById(userId: Int): User {
+    suspend fun getUserById(userId: Int): User? {
         return withContext(Dispatchers.IO) {
             userDao.findById(userId)
         }
     }
 
-    // Use Dispatchers.IO to perform database operations in the background
     fun updateUserName(newName: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val currentUser = userDao.findById(1)
@@ -54,4 +50,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 }
+
+
 

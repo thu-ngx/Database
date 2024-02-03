@@ -1,5 +1,6 @@
 package com.example.database
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -34,9 +35,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.LaunchedEffect
 import com.example.database.data.MainViewModel
-import com.example.database.ui.theme.DatabaseTheme
 
 @Composable
 fun MessagesList(onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel) {
@@ -46,11 +46,11 @@ fun MessagesList(onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel) 
             .padding(20.dp)
     ) {
         NavBar(onNavigateToUserDetails)
-        Conversation(SampleData.conversationSample)
+        Conversation(SampleData.conversationSample, viewModel)
     }
 }
 
-data class Message(val author: String, val body: String)
+data class Message(val body: String)
 
 @Composable
 fun NavBar(onNavigateToUserDetails: () -> Unit) {
@@ -70,7 +70,19 @@ fun NavBar(onNavigateToUserDetails: () -> Unit) {
 }
 
 @Composable
-fun MessageCard(msg: Message) {
+fun MessageCard(msg: Message, viewModel: MainViewModel) {
+    var userName by remember { mutableStateOf("") }
+
+    val currentUserId = 1
+
+    LaunchedEffect(currentUserId) {
+        // Fetch the current user initially
+        val currentUser = viewModel.getUserById(currentUserId)
+        if (currentUser != null) {
+            userName = currentUser.userName ?: ""
+        }
+    }
+
     Row(modifier = Modifier.padding(all = 8.dp)) {
 
         // PROFILE PICTURE
@@ -97,7 +109,7 @@ fun MessageCard(msg: Message) {
         Column(modifier = Modifier.clickable { isExpanded = !isExpanded }) {
             // NAME
             Text(
-                text = msg.author,
+                text = userName,
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.titleSmall
             )
@@ -128,10 +140,10 @@ fun MessageCard(msg: Message) {
 }
 
 @Composable
-fun Conversation(messages: List<Message>) {
+fun Conversation(messages: List<Message>, viewModel: MainViewModel) {
     LazyColumn {
         items(messages) { message ->
-            MessageCard(message)
+            MessageCard(message, viewModel)
         }
     }
 }
