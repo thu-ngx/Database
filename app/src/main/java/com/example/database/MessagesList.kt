@@ -35,10 +35,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.database.data.MainViewModel
 import com.example.database.ui.theme.DatabaseTheme
 
 @Composable
-fun MessagesList(onNavigateToUserDetails: () -> Unit) {
+fun MessagesList(onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,7 +67,6 @@ fun NavBar(onNavigateToUserDetails: () -> Unit) {
             Icon(imageVector = Icons.Default.Settings, contentDescription = "Settings")
         }
     }
-
 }
 
 @Composable
@@ -136,10 +136,10 @@ fun Conversation(messages: List<Message>) {
     }
 }
 
-@Preview
-@Composable
-fun PreviewConversation() {
-    DatabaseTheme {
-        MessagesList({})
-    }
-}
+//@Preview
+//@Composable
+//fun PreviewConversation() {
+//    DatabaseTheme {
+//        MessagesList({})
+//    }
+//}
