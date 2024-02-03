@@ -1,7 +1,11 @@
 package com.example.database
 
-import androidx.compose.foundation.Image
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,12 +33,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.example.database.data.AppDatabase
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import com.example.database.data.MainViewModel
-import com.example.database.ui.theme.DatabaseTheme
+
 
 @Composable
 fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel) {
@@ -46,7 +48,6 @@ fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel) 
         NavigationBar(onNavigateToMessagesList)
         Spacer(modifier = Modifier.height(80.dp))
         UserInfo(viewModel)
-        PhotoPicker()
     }
 }
 
@@ -61,8 +62,26 @@ fun UserInfo(viewModel: MainViewModel) {
         // Fetch the current user initially
         val currentUser = viewModel.getUserById(currentUserId)
         if (currentUser != null) {
+
             userName = currentUser.userName ?: ""
         }
+    }
+
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    // Registers a photo picker activity launcher in single-select mode.
+    val singlePhotoPickLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImageUri = uri }
+    )
+
+    // Launch the photo picker and let the user choose only images.
+    fun pickPhoto() {
+        singlePhotoPickLauncher.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
     }
 
     Column(
@@ -70,13 +89,17 @@ fun UserInfo(viewModel: MainViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(R.drawable.profile_picture_png_14_44_11_855),
+        AsyncImage(
+            model = selectedImageUri,
             contentDescription = null,
             modifier = Modifier
                 .size(150.dp)
                 .clip(CircleShape)
                 .border(1.5.dp, MaterialTheme.colorScheme.secondary, CircleShape)
+                .clickable(onClick = {
+                    pickPhoto()
+                }),
+                    contentScale = ContentScale.FillBounds
         )
 
         Spacer(modifier = Modifier.width(20.dp))
