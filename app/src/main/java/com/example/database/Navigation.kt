@@ -1,7 +1,9 @@
 package com.example.database
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,12 +17,14 @@ fun MyAppNavHost(
     startDestination: String = "messageslist",
     viewModel: MainViewModel
 ) {
+    val context = LocalContext.current
+
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {
         composable("messageslist") {
             MessagesListScreen(
-                onNavigateToUserDetails = { navController.navigate("userdetails") }, viewModel
+                onNavigateToUserDetails = { navController.navigate("userdetails") }, viewModel, context
             )
         }
         composable("userdetails") {
@@ -31,7 +35,7 @@ fun MyAppNavHost(
                             inclusive = true
                         }
                     }
-                }, viewModel
+                }, viewModel, context
             )
         }
     }
@@ -39,14 +43,14 @@ fun MyAppNavHost(
 
 @Composable
 fun MessagesListScreen(
-    onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel
+    onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel, context: Context
 ) {
-    MessagesList(onNavigateToUserDetails, viewModel)
+    MessagesList(onNavigateToUserDetails, viewModel, context)
 }
 
 @Composable
 fun UserDetailsScreen(
-    onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel
+    onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel, context: Context
 ) {
-    UserDetails(onNavigateToMessagesList, viewModel)
+    UserDetails(onNavigateToMessagesList, viewModel, context)
 }

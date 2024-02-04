@@ -1,6 +1,8 @@
 package com.example.database
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.Uri
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -36,17 +38,24 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.database.data.MainViewModel
 
 @Composable
-fun MessagesList(onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel) {
+fun MessagesList(onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel, context: Context) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(20.dp)
     ) {
         NavBar(onNavigateToUserDetails)
-        Conversation(SampleData.conversationSample, viewModel)
+        Conversation(SampleData.conversationSample, viewModel, context)
     }
 }
 
@@ -69,9 +78,18 @@ fun NavBar(onNavigateToUserDetails: () -> Unit) {
     }
 }
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun MessageCard(msg: Message, viewModel: MainViewModel) {
+fun MessageCard(msg: Message, viewModel: MainViewModel, context: Context) {
     var userName by remember { mutableStateOf("") }
+
+    var selectedImageUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+//    LaunchedEffect(key1 = true) {
+//        selectedImageUri = viewModel.selectedImageUri.value
+//    }
 
     val currentUserId = 1
 
@@ -81,19 +99,23 @@ fun MessageCard(msg: Message, viewModel: MainViewModel) {
         if (currentUser != null) {
             userName = currentUser.userName ?: ""
         }
+
+        // Load the saved image Uri from app-specific storage
+        selectedImageUri = loadSavedImageUri(context)
     }
 
     Row(modifier = Modifier.padding(all = 8.dp)) {
 
         // PROFILE PICTURE
-        Image(
-            painter = painterResource(R.drawable.profile_picture_png_14_44_11_855),
+        AsyncImage(
+            model = selectedImageUri,
             contentDescription = null,
             modifier = Modifier
                 .size(40.dp)
                 .clip(CircleShape)
                 .border(1.5.dp, MaterialTheme.colorScheme.secondary, CircleShape)
         )
+
 
         Spacer(modifier = Modifier.width(8.dp))
 
@@ -140,10 +162,10 @@ fun MessageCard(msg: Message, viewModel: MainViewModel) {
 }
 
 @Composable
-fun Conversation(messages: List<Message>, viewModel: MainViewModel) {
+fun Conversation(messages: List<Message>, viewModel: MainViewModel, context: Context) {
     LazyColumn {
         items(messages) { message ->
-            MessageCard(message, viewModel)
+            MessageCard(message, viewModel, context)
         }
     }
 }

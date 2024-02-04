@@ -41,7 +41,7 @@ import com.example.database.data.MainViewModel
 
 
 @Composable
-fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel) {
+fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel, context: Context) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -49,13 +49,13 @@ fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel) 
     ) {
         NavigationBar(onNavigateToMessagesList)
         Spacer(modifier = Modifier.height(80.dp))
-        UserInfo(viewModel)
+        UserInfo(viewModel, context)
     }
 }
 
 
 @Composable
-fun UserInfo(viewModel: MainViewModel) {
+fun UserInfo(viewModel: MainViewModel, context: Context) {
     var userName by remember { mutableStateOf("") }
 
     val currentUserId = 1
@@ -63,8 +63,6 @@ fun UserInfo(viewModel: MainViewModel) {
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-
-    val context = LocalContext.current
 
     LaunchedEffect(currentUserId) {
         // Fetch the current user initially
@@ -83,7 +81,7 @@ fun UserInfo(viewModel: MainViewModel) {
         onResult = { uri: Uri? ->
             uri?.let {
                 selectedImageUri = it
-                saveImageToInternalStorage(context, it)
+                saveImageToInternalStorage(context, it, viewModel)
             }
         }
     )
@@ -157,7 +155,7 @@ fun BackButton(onNavigateToMessagesList: () -> Unit) {
     }
 }
 
-fun saveImageToInternalStorage(context: Context, uri: Uri): Uri? {
+fun saveImageToInternalStorage(context: Context, uri: Uri, viewModel: MainViewModel): Uri? {
     try {
         val inputStream = context.contentResolver.openInputStream(uri)
         val outputStream = context.openFileOutput("image.jpg", Context.MODE_PRIVATE)
@@ -168,13 +166,16 @@ fun saveImageToInternalStorage(context: Context, uri: Uri): Uri? {
             }
         }
 
-        // Return the Uri of the saved image file
-        return Uri.fromFile(context.getFileStreamPath("image.jpg"))
+        // Get the Uri of the saved image file
+        val savedImageUri = Uri.fromFile(context.getFileStreamPath("image.jpg"))
+
+        return savedImageUri
     } catch (e: Exception) {
-        // Handle exceptions, e.g., IOException
+        e.printStackTrace()
         return null
     }
 }
+
 
 fun loadSavedImageUri(context: Context): Uri? {
     return Uri.fromFile(context.getFileStreamPath("image.jpg"))
