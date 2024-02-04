@@ -1,6 +1,6 @@
 package com.example.database
 
-import com.example.database.Message
+import com.example.database.views.Message
 
 /**
  * SampleData for Jetpack Compose Tutorial
@@ -31,42 +31,33 @@ object SampleData {
             "Searching for alternatives to XML layouts..."
         ),
         Message(
-
             """Hey, take a look at Jetpack Compose, it's great!
             |It's the Android's modern toolkit for building native UI.
             |It simplifies and accelerates UI development on Android.
             |Less code, powerful tools, and intuitive Kotlin APIs :)""".trim()
         ),
         Message(
-
             "It's available from API 21+ :)"
         ),
         Message(
-
             "Writing Kotlin for UI seems so natural, Compose where have you been all my life?"
         ),
         Message(
-
             "Android Studio next version's name is Arctic Fox"
         ),
         Message(
-
             "Android Studio Arctic Fox tooling for Compose is top notch ^_^"
         ),
         Message(
-
             "I didn't know you can now run the emulator directly from Android Studio"
         ),
         Message(
-
             "Compose Previews are great to check quickly how a composable layout looks like"
         ),
         Message(
-
             "Previews are also interactive after enabling the experimental setting"
         ),
         Message(
-
             "Have you tried writing build.gradle with KTS?"
         ),
     )

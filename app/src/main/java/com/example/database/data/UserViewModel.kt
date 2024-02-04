@@ -1,15 +1,10 @@
 package com.example.database.data
 
 import android.app.Application
-import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -20,23 +15,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     ).build()
 
     private val userDao: UserDao = db.userDao()
-
-//        private val _selectedImageUri = MutableStateFlow<Uri?>(null)
-//        val selectedImageUri: StateFlow<Uri?> = _selectedImageUri
-//
-//        // ... other code
-//
-//        fun setSelectedImageUri(uri: Uri?) {
-//            _selectedImageUri.value = uri
-//        }
-
-
-
-    fun insertUser(user: User) {
-        viewModelScope.launch(Dispatchers.IO) {
-            userDao.insertUser(user)
-        }
-    }
 
     fun insertUserIfNotExists(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -66,6 +44,3 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 }
-
-
-

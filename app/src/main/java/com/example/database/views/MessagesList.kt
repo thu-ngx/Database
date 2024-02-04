@@ -1,10 +1,9 @@
-package com.example.database
+package com.example.database.views
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,7 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,13 +36,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
+import com.example.database.SampleData
 import com.example.database.data.MainViewModel
 
 @Composable
@@ -86,10 +79,6 @@ fun MessageCard(msg: Message, viewModel: MainViewModel, context: Context) {
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-
-//    LaunchedEffect(key1 = true) {
-//        selectedImageUri = viewModel.selectedImageUri.value
-//    }
 
     val currentUserId = 1
 
@@ -169,11 +158,3 @@ fun Conversation(messages: List<Message>, viewModel: MainViewModel, context: Con
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun PreviewConversation() {
-//    DatabaseTheme {
-//        MessagesList({})
-//    }
-//}

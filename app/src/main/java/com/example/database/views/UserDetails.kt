@@ -1,4 +1,4 @@
-package com.example.database
+package com.example.database.views
 
 import android.content.Context
 import android.net.Uri
@@ -35,7 +35,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import com.example.database.data.MainViewModel
 
@@ -81,7 +80,7 @@ fun UserInfo(viewModel: MainViewModel, context: Context) {
         onResult = { uri: Uri? ->
             uri?.let {
                 selectedImageUri = it
-                saveImageToInternalStorage(context, it, viewModel)
+                saveImageToInternalStorage(context, it)
             }
         }
     )
@@ -155,7 +154,7 @@ fun BackButton(onNavigateToMessagesList: () -> Unit) {
     }
 }
 
-fun saveImageToInternalStorage(context: Context, uri: Uri, viewModel: MainViewModel): Uri? {
+fun saveImageToInternalStorage(context: Context, uri: Uri): Uri? {
     try {
         val inputStream = context.contentResolver.openInputStream(uri)
         val outputStream = context.openFileOutput("image.jpg", Context.MODE_PRIVATE)
@@ -167,9 +166,7 @@ fun saveImageToInternalStorage(context: Context, uri: Uri, viewModel: MainViewMo
         }
 
         // Get the Uri of the saved image file
-        val savedImageUri = Uri.fromFile(context.getFileStreamPath("image.jpg"))
-
-        return savedImageUri
+        return Uri.fromFile(context.getFileStreamPath("image.jpg"))
     } catch (e: Exception) {
         e.printStackTrace()
         return null
@@ -180,12 +177,3 @@ fun saveImageToInternalStorage(context: Context, uri: Uri, viewModel: MainViewMo
 fun loadSavedImageUri(context: Context): Uri? {
     return Uri.fromFile(context.getFileStreamPath("image.jpg"))
 }
-
-
-//@Preview
-//@Composable
-//fun Preview() {
-//    DatabaseTheme {
-//        UserDetails({})
-//    }
-//}
