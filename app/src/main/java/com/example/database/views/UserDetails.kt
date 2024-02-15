@@ -49,6 +49,7 @@ fun UserDetails(onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel, 
         NavigationBar(onNavigateToMessagesList)
         Spacer(modifier = Modifier.height(80.dp))
         UserInfo(viewModel, context)
+        EnableNotificationButton()
     }
 }
 
@@ -129,6 +130,18 @@ fun UserInfo(viewModel: MainViewModel, context: Context) {
         ) {
             Text("Save")
         }
+    }
+}
+
+@Composable
+fun EnableNotificationButton() {
+    Button(
+        onClick = {
+
+        },
+        modifier = Modifier.padding(top = 16.dp)
+    ) {
+        Text("Enable notifications")
     }
 }
 

@@ -12,9 +12,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel = MainViewModel(application)
-
         // Insert the initial user if it doesn't exist
         viewModel.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
+
+//        val notificationService = NotificationService(applicationContext)
 
         setContent {
             MyAppNavHost(viewModel = viewModel)
