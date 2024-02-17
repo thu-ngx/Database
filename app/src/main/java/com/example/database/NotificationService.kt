@@ -23,6 +23,7 @@ class NotificationService(private val context: Context) {
             .setContentTitle("Test")
             .setContentText("Automatic notification")
             .setSmallIcon(R.drawable.profile_picture_png_14_44_11_855)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(activityPendingIntent)
             .build()
 

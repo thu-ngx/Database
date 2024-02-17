@@ -17,9 +17,8 @@ class NotificationApp : Application() {
             val channel = NotificationChannel(
                 NotificationService.CHANNEL_ID,
                 "Test channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            channel.description = "Used for implementing notification feature"
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply { description = "Used for implementing notification feature" }
 
             // Register the channel with the system.
             val notificationManager: NotificationManager =
