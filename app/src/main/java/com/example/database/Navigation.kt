@@ -3,7 +3,6 @@ package com.example.database
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,14 +17,17 @@ fun MyAppNavHost(
     navController: NavHostController = rememberNavController(),
     startDestination: String = "messageslist",
     viewModel: MainViewModel,
-    context: Context
+    context: Context,
+    notificationViewModel: NotificationViewModel
 ) {
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {
         composable("messageslist") {
             MessagesListScreen(
-                onNavigateToUserDetails = { navController.navigate("userdetails") }, viewModel, context
+                onNavigateToUserDetails = { navController.navigate("userdetails") },
+                viewModel,
+                context
             )
         }
         composable("userdetails") {
@@ -36,7 +38,7 @@ fun MyAppNavHost(
                             inclusive = true
                         }
                     }
-                }, viewModel, context
+                }, viewModel, context, notificationViewModel
             )
         }
     }
@@ -44,14 +46,19 @@ fun MyAppNavHost(
 
 @Composable
 fun MessagesListScreen(
-    onNavigateToUserDetails: () -> Unit, viewModel: MainViewModel, context: Context
+    onNavigateToUserDetails: () -> Unit,
+    viewModel: MainViewModel,
+    context: Context,
 ) {
     MessagesList(onNavigateToUserDetails, viewModel, context)
 }
 
 @Composable
 fun UserDetailsScreen(
-    onNavigateToMessagesList: () -> Unit, viewModel: MainViewModel, context: Context
+    onNavigateToMessagesList: () -> Unit,
+    viewModel: MainViewModel,
+    context: Context,
+    notificationViewModel: NotificationViewModel
 ) {
-    UserDetails(onNavigateToMessagesList, viewModel, context)
+    UserDetails(onNavigateToMessagesList, viewModel, context, notificationViewModel)
 }

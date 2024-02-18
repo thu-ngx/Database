@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,13 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.example.database.data.MainViewModel
@@ -30,6 +26,7 @@ import com.example.database.ui.theme.DatabaseTheme
 
 class MainActivity : ComponentActivity() {
     private lateinit var viewModel: MainViewModel
+    private val notificationViewModel by viewModels<NotificationViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,56 +39,18 @@ class MainActivity : ComponentActivity() {
             DatabaseTheme {
                 val notificationService = NotificationService(this)
 
-                var hasNotificationPermission by remember {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        mutableStateOf(
-                            ContextCompat.checkSelfPermission(
-                                this, Manifest.permission.POST_NOTIFICATIONS
-                            ) == PackageManager.PERMISSION_GRANTED
-                        )
-                    } else mutableStateOf(true)
-                }
-
-                LaunchedEffect(hasNotificationPermission) {
-                    if (hasNotificationPermission) {
+                // Launch the basic notification when the app is launched if permission is granted
+                LaunchedEffect(notificationViewModel.hasNotificationPermission.value) {
+                    if (notificationViewModel.hasNotificationPermission.value) {
                         notificationService.showBasicNotification()
                     }
                 }
 
-                val permissionLauncher = rememberLauncherForActivityResult(
-                    contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted ->
-                        if (isGranted) {
-                            notificationService.showPermissionEnabledNotification()
-                        }
-                        hasNotificationPermission = isGranted
-                    }
+                MyAppNavHost(
+                    viewModel = viewModel,
+                    context = this,
+                    notificationViewModel = notificationViewModel
                 )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Button(onClick = {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-                        }
-                    }) {
-                        Text("Request permission")
-                    }
-                    Button(onClick = {
-                        if (hasNotificationPermission) {
-                            notificationService.showBasicNotification()
-                        }
-                    }) {
-                        Text("Show notification")
-                    }
-                }
-
-//                MyAppNavHost(viewModel = viewModel, context = this)
             }
 
         }

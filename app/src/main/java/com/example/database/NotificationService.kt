@@ -12,6 +12,7 @@ class NotificationService(private val context: Context) {
 
     private val notificationManager = context.getSystemService(NotificationManager::class.java)
     fun showBasicNotification() {
+        //        Intent to go to main screen when tapped
         val activityIntent = Intent(context, MainActivity::class.java)
         val activityPendingIntent = PendingIntent.getActivity(
             context,
@@ -25,7 +26,6 @@ class NotificationService(private val context: Context) {
             .setContentText("Automatic notification")
             .setSmallIcon(R.drawable.app_icon)
             .setPriority(NotificationManager.IMPORTANCE_HIGH)
-            .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
             .setContentIntent(activityPendingIntent)
             .build()
@@ -34,6 +34,7 @@ class NotificationService(private val context: Context) {
     }
 
     fun showPermissionEnabledNotification() {
+//        Intent to go to main screen when tapped
         val activityIntent = Intent(context, MainActivity::class.java)
         val activityPendingIntent = PendingIntent.getActivity(
             context,
@@ -47,7 +48,6 @@ class NotificationService(private val context: Context) {
             .setContentText("You will be notified when the device rotated")
             .setSmallIcon(R.drawable.app_icon)
             .setPriority(NotificationManager.IMPORTANCE_HIGH)
-            .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_ALL)
             .setContentIntent(activityPendingIntent)
             .build()
