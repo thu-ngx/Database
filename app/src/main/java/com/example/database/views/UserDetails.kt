@@ -2,6 +2,7 @@ package com.example.database.views
 
 import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -37,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.database.NotificationService
 import com.example.database.NotificationViewModel
@@ -52,6 +54,18 @@ fun UserDetails(
 ) {
     val notificationService = NotificationService(context)
 
+//    var hasNotificationPermission by remember {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            mutableStateOf(
+//                ContextCompat.checkSelfPermission(
+//                    context, Manifest.permission.POST_NOTIFICATIONS
+//                ) == PackageManager.PERMISSION_GRANTED
+//            )
+//        } else mutableStateOf(true)
+//    }
+
+    val hasNotificationPermission by notificationViewModel.hasNotificationPermission
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,10 +74,14 @@ fun UserDetails(
         NavigationBar(onNavigateToMessagesList)
         Spacer(modifier = Modifier.height(80.dp))
         UserInfo(viewModel, context)
-        // Only show the button if the permission is not granted
-        if (!notificationViewModel.hasNotificationPermission.value) {
-            EnableNotificationButton(notificationService, notificationViewModel)
+        if (!hasNotificationPermission) {
+            EnableNotificationButton(
+                notificationService,
+                notificationViewModel,
+                hasNotificationPermission
+            )
         }
+
     }
 }
 
@@ -150,8 +168,10 @@ fun UserInfo(viewModel: MainViewModel, context: Context) {
 @Composable
 fun EnableNotificationButton(
     notificationService: NotificationService,
-    notificationViewModel: NotificationViewModel
+    notificationViewModel: NotificationViewModel,
+    hasNotificationPermission: Boolean
 ) {
+
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -160,7 +180,6 @@ fun EnableNotificationButton(
             notificationService.showPermissionEnabledNotification()
         }
     }
-
     Button(
         onClick = {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -171,6 +190,7 @@ fun EnableNotificationButton(
     ) {
         Text("Enable notifications")
     }
+
 }
 
 
