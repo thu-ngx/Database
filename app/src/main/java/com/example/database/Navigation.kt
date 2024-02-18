@@ -17,10 +17,9 @@ fun MyAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = "messageslist",
-    viewModel: MainViewModel
+    viewModel: MainViewModel,
+    context: Context
 ) {
-    val context = LocalContext.current
-
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
     ) {

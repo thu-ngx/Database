@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,27 +38,34 @@ class MainActivity : ComponentActivity() {
         // Insert the initial user if it doesn't exist
         viewModel.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
 
-//        val notificationService = NotificationService(applicationContext)
-
-        val notificationService = NotificationService(this)
-
         setContent {
             DatabaseTheme {
-                val context = LocalContext.current
+                val notificationService = NotificationService(this)
 
                 var hasNotificationPermission by remember {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         mutableStateOf(
                             ContextCompat.checkSelfPermission(
-                                context, Manifest.permission.POST_NOTIFICATIONS
+                                this, Manifest.permission.POST_NOTIFICATIONS
                             ) == PackageManager.PERMISSION_GRANTED
                         )
                     } else mutableStateOf(true)
                 }
 
+                LaunchedEffect(hasNotificationPermission) {
+                    if (hasNotificationPermission) {
+                        notificationService.showBasicNotification()
+                    }
+                }
+
                 val permissionLauncher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission(),
-                    onResult = { isGranted -> hasNotificationPermission = true }
+                    onResult = { isGranted ->
+                        if (isGranted) {
+                            notificationService.showPermissionEnabledNotification()
+                        }
+                        hasNotificationPermission = isGranted
+                    }
                 )
 
                 Column(
@@ -83,7 +91,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-//                MyAppNavHost(viewModel = viewModel)
+//                MyAppNavHost(viewModel = viewModel, context = this)
             }
 
         }
