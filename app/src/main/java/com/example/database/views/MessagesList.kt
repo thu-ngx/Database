@@ -1,9 +1,7 @@
 package com.example.database.views
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.border
@@ -38,10 +36,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.LaunchedEffect
-import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
-import com.example.database.NotificationService
-import com.example.database.NotificationViewModel
 import com.example.database.SampleData
 import com.example.database.data.MainViewModel
 

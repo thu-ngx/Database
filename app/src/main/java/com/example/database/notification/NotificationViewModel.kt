@@ -1,4 +1,4 @@
-package com.example.database
+package com.example.database.notification
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf

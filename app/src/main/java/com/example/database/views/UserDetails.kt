@@ -2,7 +2,6 @@ package com.example.database.views
 
 import android.Manifest
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -38,10 +37,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
-import com.example.database.NotificationService
-import com.example.database.NotificationViewModel
+import com.example.database.notification.NotificationService
+import com.example.database.notification.NotificationViewModel
 import com.example.database.data.MainViewModel
 
 

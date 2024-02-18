@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.database.data.MainViewModel
+import com.example.database.notification.NotificationViewModel
 import com.example.database.views.MessagesList
 import com.example.database.views.UserDetails
 
