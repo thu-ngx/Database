@@ -1,4 +1,4 @@
-package com.example.database
+package com.example.database.sensor
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,6 +12,8 @@ import android.hardware.SensorManager
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.database.MainActivity
+import com.example.database.R
 
 class SensorService : Service(), SensorEventListener {
 

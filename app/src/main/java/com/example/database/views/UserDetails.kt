@@ -52,16 +52,6 @@ fun UserDetails(
 ) {
     val notificationService = NotificationService(context)
 
-//    var hasNotificationPermission by remember {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            mutableStateOf(
-//                ContextCompat.checkSelfPermission(
-//                    context, Manifest.permission.POST_NOTIFICATIONS
-//                ) == PackageManager.PERMISSION_GRANTED
-//            )
-//        } else mutableStateOf(true)
-//    }
-
     val hasNotificationPermission by notificationViewModel.hasNotificationPermission
 
     Column(
