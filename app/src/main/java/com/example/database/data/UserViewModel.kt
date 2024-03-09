@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class UserViewModel(application: Application) : AndroidViewModel(application) {
     private val db: AppDatabase = Room.databaseBuilder(
         application,
         AppDatabase::class.java, "user-database"

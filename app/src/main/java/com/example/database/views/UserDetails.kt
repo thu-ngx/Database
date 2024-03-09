@@ -40,13 +40,13 @@ import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
 import com.example.database.notification.NotificationService
 import com.example.database.notification.NotificationViewModel
-import com.example.database.data.MainViewModel
+import com.example.database.data.UserViewModel
 
 
 @Composable
 fun UserDetails(
     onNavigateToMessagesList: () -> Unit,
-    viewModel: MainViewModel,
+    viewModel: UserViewModel,
     context: Context,
     notificationViewModel: NotificationViewModel
 ) {
@@ -75,7 +75,7 @@ fun UserDetails(
 
 
 @Composable
-fun UserInfo(viewModel: MainViewModel, context: Context) {
+fun UserInfo(viewModel: UserViewModel, context: Context) {
     var userName by remember { mutableStateOf("") }
 
     val currentUserId = 1

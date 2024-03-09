@@ -38,12 +38,12 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.LaunchedEffect
 import coil.compose.AsyncImage
 import com.example.database.SampleData
-import com.example.database.data.MainViewModel
+import com.example.database.data.UserViewModel
 
 @Composable
 fun MessagesList(
     onNavigateToUserDetails: () -> Unit,
-    viewModel: MainViewModel,
+    viewModel: UserViewModel,
     context: Context,
 ) {
     Column(
@@ -77,7 +77,7 @@ fun NavBar(onNavigateToUserDetails: () -> Unit) {
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun MessageCard(msg: Message, viewModel: MainViewModel, context: Context) {
+fun MessageCard(msg: Message, viewModel: UserViewModel, context: Context) {
     var userName by remember { mutableStateOf("") }
 
     var selectedImageUri by remember {
@@ -155,7 +155,7 @@ fun MessageCard(msg: Message, viewModel: MainViewModel, context: Context) {
 }
 
 @Composable
-fun Conversation(messages: List<Message>, viewModel: MainViewModel, context: Context) {
+fun Conversation(messages: List<Message>, viewModel: UserViewModel, context: Context) {
     LazyColumn {
         items(messages) { message ->
             MessageCard(message, viewModel, context)

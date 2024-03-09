@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.database.data.MainViewModel
+import com.example.database.data.UserViewModel
 import com.example.database.notification.NotificationViewModel
 import com.example.database.views.MessagesList
 import com.example.database.views.UserDetails
@@ -17,7 +17,7 @@ fun MyAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = "messageslist",
-    viewModel: MainViewModel,
+    viewModel: UserViewModel,
     context: Context,
     notificationViewModel: NotificationViewModel
 ) {
@@ -48,7 +48,7 @@ fun MyAppNavHost(
 @Composable
 fun MessagesListScreen(
     onNavigateToUserDetails: () -> Unit,
-    viewModel: MainViewModel,
+    viewModel: UserViewModel,
     context: Context,
 ) {
     MessagesList(onNavigateToUserDetails, viewModel, context)
@@ -57,7 +57,7 @@ fun MessagesListScreen(
 @Composable
 fun UserDetailsScreen(
     onNavigateToMessagesList: () -> Unit,
-    viewModel: MainViewModel,
+    viewModel: UserViewModel,
     context: Context,
     notificationViewModel: NotificationViewModel
 ) {

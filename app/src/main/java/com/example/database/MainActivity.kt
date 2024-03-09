@@ -3,19 +3,14 @@ package com.example.database
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.database.data.MainViewModel
+import com.example.database.camera.CameraViewModel
+import com.example.database.data.UserViewModel
 import com.example.database.data.User
 import com.example.database.notification.NotificationService
 import com.example.database.notification.NotificationViewModel
@@ -24,7 +19,7 @@ import com.example.database.ui.theme.DatabaseTheme
 import com.example.database.views.CameraView
 
 class MainActivity : ComponentActivity(){
-    private lateinit var viewModel: MainViewModel
+    private lateinit var userViewModel: UserViewModel
     private val notificationViewModel by viewModels<NotificationViewModel>()
 
     private var notificationService: NotificationService? = null
@@ -38,9 +33,9 @@ class MainActivity : ComponentActivity(){
                 this, arrayOf(Manifest.permission.CAMERA), 0
             )
         }
-        viewModel = MainViewModel(application)
+        userViewModel = UserViewModel(application)
         // Insert the initial user if it doesn't exist
-        viewModel.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
+        userViewModel.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
 
         setContent {
             DatabaseTheme {
