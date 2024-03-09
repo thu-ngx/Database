@@ -21,6 +21,7 @@ import com.example.database.notification.NotificationService
 import com.example.database.notification.NotificationViewModel
 import com.example.database.sensor.SensorService
 import com.example.database.ui.theme.DatabaseTheme
+import com.example.database.views.CameraView
 
 class MainActivity : ComponentActivity(){
     private lateinit var viewModel: MainViewModel
@@ -32,7 +33,6 @@ class MainActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
         startService(Intent(this, SensorService::class.java))
 
-        // Assume the user accepts permission
         if(!hasCameraPermission()) {
             ActivityCompat.requestPermissions(
                 this, arrayOf(Manifest.permission.CAMERA), 0
@@ -44,28 +44,30 @@ class MainActivity : ComponentActivity(){
 
         setContent {
             DatabaseTheme {
-                notificationService = NotificationService(this)
+//                notificationService = NotificationService(this)
+//
+//                var hasNotificationPermission by remember {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                        mutableStateOf(
+//                            ContextCompat.checkSelfPermission(
+//                                this, Manifest.permission.POST_NOTIFICATIONS
+//                            ) == PackageManager.PERMISSION_GRANTED
+//                        )
+//                    } else mutableStateOf(true)
+//                }
+//
+//                LaunchedEffect(key1 = true ){
+//                    if(hasNotificationPermission){
+//                        notificationService!!.showBasicNotification()
+//                    }
+//                }
+//                MyAppNavHost(
+//                    viewModel = viewModel,
+//                    context = this,
+//                    notificationViewModel = notificationViewModel
+//                )
 
-                var hasNotificationPermission by remember {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        mutableStateOf(
-                            ContextCompat.checkSelfPermission(
-                                this, Manifest.permission.POST_NOTIFICATIONS
-                            ) == PackageManager.PERMISSION_GRANTED
-                        )
-                    } else mutableStateOf(true)
-                }
-
-                LaunchedEffect(key1 = true ){
-                    if(hasNotificationPermission){
-                        notificationService!!.showBasicNotification()
-                    }
-                }
-                MyAppNavHost(
-                    viewModel = viewModel,
-                    context = this,
-                    notificationViewModel = notificationViewModel
-                )
+                CameraView()
             }
 
         }
