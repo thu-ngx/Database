@@ -46,6 +46,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CameraView(
+    onNavigateToUserDetails: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -68,7 +69,8 @@ fun CameraView(
                 override fun onCaptureSuccess(image: ImageProxy) {
                     super.onCaptureSuccess(image)
 
-                    val matrix = Matrix().apply { postRotate(image.imageInfo.rotationDegrees.toFloat()) }
+                    val matrix =
+                        Matrix().apply { postRotate(image.imageInfo.rotationDegrees.toFloat()) }
                     val rotatedBitmap = Bitmap.createBitmap(
                         image.toBitmap(),
                         0,
@@ -102,9 +104,7 @@ fun CameraView(
             CameraPreview(controller = controller, modifier = Modifier.fillMaxSize())
 
             // Back to UserDetails screen
-            IconButton(onClick = {
-
-            }, modifier = Modifier.offset(16.dp)) {
+            IconButton(onClick = onNavigateToUserDetails, modifier = Modifier.offset(16.dp)) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = "Switch camera"

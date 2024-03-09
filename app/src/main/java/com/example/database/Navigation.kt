@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.database.data.UserViewModel
 import com.example.database.notification.NotificationViewModel
+import com.example.database.views.CameraView
 import com.example.database.views.MessagesList
 import com.example.database.views.UserDetails
 
@@ -39,7 +40,15 @@ fun MyAppNavHost(
                             inclusive = true
                         }
                     }
+                },
+                onNavigateToCameraView = {
+                    navController.navigate("cameraview")
                 }, viewModel, context, notificationViewModel
+            )
+        }
+        composable("cameraview") {
+            CameraView(
+                onNavigateToUserDetails = { navController.navigate("userdetails") }
             )
         }
     }
@@ -57,9 +66,16 @@ fun MessagesListScreen(
 @Composable
 fun UserDetailsScreen(
     onNavigateToMessagesList: () -> Unit,
+    onNavigateToCameraView: () -> Unit,
     viewModel: UserViewModel,
     context: Context,
     notificationViewModel: NotificationViewModel
 ) {
-    UserDetails(onNavigateToMessagesList, viewModel, context, notificationViewModel)
+    UserDetails(
+        onNavigateToMessagesList,
+        onNavigateToCameraView,
+        viewModel,
+        context,
+        notificationViewModel
+    )
 }

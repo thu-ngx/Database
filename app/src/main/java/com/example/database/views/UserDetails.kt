@@ -46,6 +46,7 @@ import com.example.database.data.UserViewModel
 @Composable
 fun UserDetails(
     onNavigateToMessagesList: () -> Unit,
+    onNavigateToCameraView: () -> Unit,
     viewModel: UserViewModel,
     context: Context,
     notificationViewModel: NotificationViewModel
@@ -66,8 +67,12 @@ fun UserDetails(
             EnableNotificationButton(
                 notificationService,
                 notificationViewModel,
-                hasNotificationPermission
             )
+        }
+        Button(
+            onClick = onNavigateToCameraView, modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Open camera")
         }
 
     }
@@ -96,15 +101,14 @@ fun UserInfo(viewModel: UserViewModel, context: Context) {
     }
 
     // Registers a photo picker activity launcher in single-select mode.
-    val singlePhotoPickLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri: Uri? ->
-            uri?.let {
-                selectedImageUri = it
-                saveImageToInternalStorage(context, it)
-            }
-        }
-    )
+    val singlePhotoPickLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = { uri: Uri? ->
+                uri?.let {
+                    selectedImageUri = it
+                    saveImageToInternalStorage(context, it)
+                }
+            })
 
     // Launch the photo picker and let the user choose only images.
     fun pickPhoto() {
@@ -134,19 +138,16 @@ fun UserInfo(viewModel: UserViewModel, context: Context) {
         Spacer(modifier = Modifier.width(20.dp))
 
         TextField(
-            value = userName,
-            onValueChange = {
+            value = userName, onValueChange = {
                 userName = it
-            },
-            modifier = Modifier.padding(vertical = 30.dp)
+            }, modifier = Modifier.padding(vertical = 30.dp)
         )
 
         Button(
             onClick = {
                 // Update the user's name in the database
                 viewModel.updateUserName(userName)
-            },
-            modifier = Modifier.padding(top = 16.dp)
+            }, modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Save")
         }
@@ -157,7 +158,6 @@ fun UserInfo(viewModel: UserViewModel, context: Context) {
 fun EnableNotificationButton(
     notificationService: NotificationService,
     notificationViewModel: NotificationViewModel,
-    hasNotificationPermission: Boolean
 ) {
 
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -173,8 +173,7 @@ fun EnableNotificationButton(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
-        },
-        modifier = Modifier.padding(top = 16.dp)
+        }, modifier = Modifier.padding(top = 16.dp)
     ) {
         Text("Enable notifications")
     }
