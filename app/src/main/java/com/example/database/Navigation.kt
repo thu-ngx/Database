@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.database.camera.CameraViewModel
 import com.example.database.data.UserViewModel
 import com.example.database.notification.NotificationViewModel
 import com.example.database.views.CameraView
@@ -18,9 +19,10 @@ fun MyAppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: String = "messageslist",
-    viewModel: UserViewModel,
+    userViewModel: UserViewModel,
     context: Context,
-    notificationViewModel: NotificationViewModel
+    notificationViewModel: NotificationViewModel,
+    cameraVM : CameraViewModel
 ) {
     NavHost(
         modifier = modifier, navController = navController, startDestination = startDestination
@@ -28,7 +30,7 @@ fun MyAppNavHost(
         composable("messageslist") {
             MessagesListScreen(
                 onNavigateToUserDetails = { navController.navigate("userdetails") },
-                viewModel,
+                userViewModel,
                 context
             )
         }
@@ -43,12 +45,13 @@ fun MyAppNavHost(
                 },
                 onNavigateToCameraView = {
                     navController.navigate("cameraview")
-                }, viewModel, context, notificationViewModel
+                }, userViewModel, context, notificationViewModel
             )
         }
         composable("cameraview") {
             CameraView(
-                onNavigateToUserDetails = { navController.navigate("userdetails") }
+                onNavigateToUserDetails = { navController.navigate("userdetails") },
+                cameraVM = cameraVM
             )
         }
     }

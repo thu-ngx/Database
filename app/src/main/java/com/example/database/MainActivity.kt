@@ -15,6 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.database.camera.CameraViewModel
 import com.example.database.data.UserViewModel
 import com.example.database.data.User
 import com.example.database.notification.NotificationService
@@ -23,8 +25,9 @@ import com.example.database.sensor.SensorService
 import com.example.database.ui.theme.DatabaseTheme
 
 class MainActivity : ComponentActivity(){
-    private lateinit var userViewModel: UserViewModel
+    private lateinit var userVM: UserViewModel
     private val notificationViewModel by viewModels<NotificationViewModel>()
+    private val cameraVM by viewModels<CameraViewModel>()
 
     private var notificationService: NotificationService? = null
 
@@ -37,9 +40,9 @@ class MainActivity : ComponentActivity(){
                 this, arrayOf(Manifest.permission.CAMERA), 0
             )
         }
-        userViewModel = UserViewModel(application)
+        userVM = UserViewModel(application)
         // Insert the initial user if it doesn't exist
-        userViewModel.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
+        userVM.insertUserIfNotExists(User(id = 1, userName = "Nguyen"))
 
         setContent {
             DatabaseTheme {
@@ -61,9 +64,10 @@ class MainActivity : ComponentActivity(){
                     }
                 }
                 MyAppNavHost(
-                    viewModel = userViewModel,
+                    userViewModel = userVM,
                     context = this,
-                    notificationViewModel = notificationViewModel
+                    notificationViewModel = notificationViewModel,
+                    cameraVM = cameraVM
                 )
             }
 

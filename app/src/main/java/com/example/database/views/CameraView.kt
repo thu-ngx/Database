@@ -46,7 +46,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CameraView(
-    onNavigateToUserDetails: () -> Unit
+    onNavigateToUserDetails: () -> Unit,
+    cameraVM: CameraViewModel
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -59,7 +60,6 @@ fun CameraView(
         }
     }
 
-    val cameraVM = viewModel<CameraViewModel>()
     val bitmaps by cameraVM.bitmaps.collectAsState()
 
     fun takePhoto(controller: LifecycleCameraController, onPhotoTaken: (Bitmap) -> Unit) {
