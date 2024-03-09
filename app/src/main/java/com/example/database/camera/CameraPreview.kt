@@ -1,4 +1,4 @@
-package com.example.database.views
+package com.example.database.camera
 
 import androidx.camera.view.LifecycleCameraController
 import androidx.camera.view.PreviewView
