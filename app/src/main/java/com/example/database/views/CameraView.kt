@@ -107,7 +107,7 @@ fun CameraView(
             IconButton(onClick = onNavigateToUserDetails, modifier = Modifier.offset(16.dp)) {
                 Icon(
                     imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = "Switch camera"
+                    contentDescription = "Back to UserDetails screen"
                 )
             }
 

@@ -45,13 +45,22 @@ fun MyAppNavHost(
                 },
                 onNavigateToCameraView = {
                     navController.navigate("cameraview")
-                }, userViewModel, context, notificationViewModel
+                },
+                userViewModel, context, notificationViewModel,
+                onNavigateToMapView = {
+                    navController.navigate("mapview")
+                }
             )
         }
         composable("cameraview") {
             CameraView(
                 onNavigateToUserDetails = { navController.navigate("userdetails") },
                 cameraVM = cameraVM
+            )
+        }
+        composable("mapview") {
+            GoogleMapView(
+                onNavigateToUserDetails = { navController.navigate("userdetails") }
             )
         }
     }
@@ -72,13 +81,15 @@ fun UserDetailsScreen(
     onNavigateToCameraView: () -> Unit,
     viewModel: UserViewModel,
     context: Context,
-    notificationViewModel: NotificationViewModel
-) {
+    notificationViewModel: NotificationViewModel,
+    onNavigateToMapView: () -> Unit,
+    ) {
     UserDetails(
         onNavigateToMessagesList,
         onNavigateToCameraView,
         viewModel,
         context,
-        notificationViewModel
+        notificationViewModel,
+        onNavigateToMapView,
     )
 }

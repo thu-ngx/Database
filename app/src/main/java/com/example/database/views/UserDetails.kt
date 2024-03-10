@@ -49,7 +49,8 @@ fun UserDetails(
     onNavigateToCameraView: () -> Unit,
     viewModel: UserViewModel,
     context: Context,
-    notificationViewModel: NotificationViewModel
+    notificationViewModel: NotificationViewModel,
+    onNavigateToMapView: () -> Unit
 ) {
     val notificationService = NotificationService(context)
 
@@ -73,6 +74,11 @@ fun UserDetails(
             onClick = onNavigateToCameraView, modifier = Modifier.padding(top = 16.dp)
         ) {
             Text("Open camera")
+        }
+        Button(
+            onClick = onNavigateToMapView, modifier = Modifier.padding(top = 16.dp)
+        ) {
+            Text("Open map")
         }
 
     }
